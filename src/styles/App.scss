@@ -1,0 +1,28 @@
+@import "~bootstrap/scss/bootstrap";
+
+
+body {
+  background-color: tomato;
+
+}
+.home{
+  background-color: grey;
+  h1{
+    color : red
+  }
+}
+.container {
+  margin: 0px;
+  padding: 0px;
+}
+
+.test{
+  //
+  div {
+    border : 1px solid grey;
+    padding:20px;
+    margin :5px;
+    border-radius: 5px;
+
+  }
+}
