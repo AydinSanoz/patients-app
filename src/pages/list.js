@@ -1,26 +1,50 @@
-import { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
-import { getPatients } from "../../lib/helper";
+import { BiTrash, BiEdit, BiUserCheck, BiUserMinus } from "react-icons/bi";
+import { Container, Table } from "react-bootstrap";
+import { deletePatient, getPatients, updatePatient } from "../lib/helper";
+import { useQuery } from "react-query";
+import { useRouter } from "next/router";
 
 export default function List(props) {
-  const [patients, setPatients] = useState([]);
+  const router = useRouter();
+  const { isLoading, isError, data, error } = useQuery("patients", getPatients);
+  if (isLoading) return <div>Patients is Loading... </div>;
+  if (isError) return <div>Error : {error}</div>;
 
-  useEffect(() => {
-    getPatients().then((res) => setPatients(res));
-  }, []);
+  const handleUpdate = (patient) => {
+    router.push({
+      pathname: `/updatePatient`,
+      query: patient,
+    });
+  };
+  const handleDelete = (id) => {
+    deletePatient(id)
+      .then((respond) => console.log(respond))
+      .catch((err) => console.log(err));
+  };
 
-  const TR = ({ i, name, surname, email, diagnosis, treatment }) => (
-    <tr key={i}>
-      <td>{name}</td>
-      <td>{surname}</td>
-      <td>{email}</td>
-      <td>{diagnosis}</td>
-      <td>{treatment}</td>
+  const handleStatus = (i) => {
+    console.log(i);
+  };
+
+  const TR = (patient) => (
+    <tr key={patient._id}>
+      <td>{patient.name}</td>
+      <td>{patient.surname}</td>
+      <td>{patient.email}</td>
+      <td>{patient.diagnosis}</td>
+      <td>{patient.treatment}</td>
+
+      <td className="func">
+        <span>Status</span>
+        <BiEdit onClick={() => handleUpdate(patient)} />
+        <BiTrash onClick={() => handleDelete(patient._id)} />
+        <BiUserCheck onClick={handleStatus} />
+      </td>
     </tr>
   );
 
   return (
-    <div>
+    <Container className="my-5">
       <Table>
         <thead>
           <tr>
@@ -29,14 +53,15 @@ export default function List(props) {
             <td>email</td>
             <td>diagnosis</td>
             <td>treatment</td>
+            <td>functions</td>
           </tr>
         </thead>
         <tbody>
-          {patients?.map((patient, i) => (
+          {data?.map((patient, i) => (
             <TR {...patient} key={i} />
           ))}
         </tbody>
       </Table>
-    </div>
+    </Container>
   );
 }

@@ -1,6 +1,6 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-export default function Header () {
+export default function Header() {
   return (
     <header className="p-3 bg-dark text-white">
       <div className="container">
@@ -24,7 +24,7 @@ export default function Header () {
               </Link>
             </li>
             <li>
-              <Link href="/record" className="nav-link px-2 text-white">
+              <Link href="/addPatient" className="nav-link px-2 text-white">
                 New Record
               </Link>
             </li>
@@ -56,4 +56,4 @@ export default function Header () {
       </div>
     </header>
   );
-};
+}
